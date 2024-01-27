@@ -29,7 +29,7 @@ input {
 
 .label {
     fill: rgb(92, 92, 92);
-    font-size: 15pt;
+    font-size: 10pt;
     font-family: "Microsoft YaHei", "宋体";
     font-weight: bold
 }
@@ -37,8 +37,11 @@ input {
 .dateLabel {
     
     fill: rgb(92, 92, 92);
+    position: absolute;
+    top: 80%;
+    left: 80%;
     display:table-cell;
-    font-size: 60pt;
+    font-size: 40pt;
     font-weight: bold;
     font-family: 'Segoe UI', 'console', Calibri, sans-serif;
 }
@@ -83,7 +86,7 @@ input {
 .barInfo {
     fill: rgb(255, 255, 255);
     font-weight: 800;
-    font-size: 24pt;
+    font-size: 20pt;
     font-family: '微软雅黑';
 }
 
@@ -223,3 +226,11 @@ input {
     fill: #cf9237
 }
 
+.centeredButton {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px; /* 设置按钮的宽度 */
+  height: 50px; /* 设置按钮的高度 */
+}

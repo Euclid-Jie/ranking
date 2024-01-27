@@ -7,20 +7,44 @@
  */
 // import * as d3 from 'd3';
 // require("./stylesheet.css");
-$('#inputfile').change(function () {
-    $('#inputfile').attr('hidden', true);
-    var r = new FileReader();
-    r.readAsText(this.files[0], config.encoding);
-    r.onload = function () {
-        //读取完成后，数据保存在对象的result属性中
-        var data = d3.csvParse(this.result);
-        try {
-            draw(data);
-        } catch (error) {
-            alert(error)            
+document.getElementById('startButton').addEventListener('click', function () {
+    // 隐藏开始按钮
+    this.style.display = 'none';
+    // Specify your CSV file path
+    var filePath = "example.csv";
+
+    // Create a new XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', filePath, true);
+    xhr.responseType = 'blob';
+
+    // Handle the onload event
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var blob = xhr.response;
+            var reader = new FileReader();
+
+            // Read the Blob as text
+            reader.readAsText(blob, config.encoding);
+
+            // Handle the onload event
+            reader.onload = function () {
+                var data = d3.csvParse(this.result);
+                try {
+                    draw(data);
+                } catch (error) {
+                    alert(error);
+                }
+            };
+        } else {
+            alert('Failed to load the file. Status: ' + xhr.status);
         }
-    }
+    };
+
+    // Send the request
+    xhr.send();
 });
+
 
 function draw(data) {
     var date = [];
@@ -75,9 +99,9 @@ function draw(data) {
     // 长度小于display_barInfo的bar将不显示barInfo
     var display_barInfo = config.display_barInfo;
     // 显示类型
-	if(config.use_type_info){
-		var use_type_info = config.use_type_info;
-	}else if (divide_by != 'name') {
+    if (config.use_type_info) {
+        var use_type_info = config.use_type_info;
+    } else if (divide_by != 'name') {
         var use_type_info = true;
     } else {
         var use_type_info = false;
@@ -561,7 +585,7 @@ function draw(data) {
                     var i = d3.interpolate(self.textContent.slice(str.length, 99), Number(d.value)),
                         prec = (Number(d.value) + "").split("."),
                         round = (prec.length > 1) ? Math.pow(10, prec[1].length) : 1;
-                    return function (t) { 
+                    return function (t) {
                         self.textContent = d[divide_by] + "-" + d.name + '  数值:' + d3.format(format)(Math.round(i(t) * round) / round);
                     };
                 })
